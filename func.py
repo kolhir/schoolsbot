@@ -276,9 +276,12 @@ def untilTheEnd(usList):
     answer=""
     flag = ""
 
-    if day != "Суббота":
-        w = 0
-    else: w = 1
+    if weekday_number == 6:
+        answer = "Show must go on"
+        return answer
+    elif weekday_number == 5:
+        w = 1
+    else: w = 0
 
     if not(tt[klass][day]):
         answer = ("Ты разве учишься сегодня?!")
