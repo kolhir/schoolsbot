@@ -30,8 +30,7 @@ def start_murkup():
     user_markup.row('Следующий урок')
     user_markup.row('Расписание на день')
     user_markup.row('Сколько осталось до конца урока?')
-    user_markup.row('Изменить класс')
-    user_markup.row('Изменить школу')
+    user_markup.row('Изменить что-нибудь')
     return user_markup
 
 def choose_school(message):
@@ -59,7 +58,12 @@ def ttOnDay(message):
     user_markup.row('Среда', 'Суббота')
     day = my_send_message(message.from_user.id, "Выбери день", user_markup, message)
     bot.register_next_step_handler(day, onDay)
-
+def change_smt(message):
+    user_markup = telebot.types.ReplyKeyboardMarkup(True, False)
+    user_markup.row('Изменить класс')
+    user_markup.row('Изменить школу')
+    my_send_message(message.from_user.id, "Что изменить?", user_markup, message)
+    
 def nextLesson(message):
     my_send_message(message.from_user.id, f.nextLesson(f.whoIsHe(message.from_user.id)), start_murkup(), message)###Передать класс человека
 
@@ -83,6 +87,8 @@ def handle_text(message):
             ttOnDay(message)
         elif message.text == "Сколько осталось до конца урока?":
             untilTheEnd(message)
+        elif message.text == "Изменить что-нибудь":
+            change_smt(message)
         elif message.text == "Изменить класс":
             f.deleteUserFromKlass(message.from_user.id)
             choose_klass(message)

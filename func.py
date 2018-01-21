@@ -138,7 +138,7 @@ def nextLesson(usList):
     answer=""
     flag = ""
     if weekday_number == 6:
-        answer = "А сегодня не воскресенье???"
+        answer = "Только самые мудрые и самые глупые не поддаются обучению."
         return answer
     elif weekday_number == 5:
         w = 1
@@ -201,8 +201,10 @@ def onDay(day, usList):
     answer = ""
     flag = 0
     win = ""
-
-    if day != "Суббота":
+    if day == "Воскресенье":
+        answer =  ("В учении нельзя останавливаться.")  
+        return answer
+    elif day != "Суббота":
         w = 0
     else: w = 1
 
@@ -277,7 +279,7 @@ def untilTheEnd(usList):
     flag = ""
 
     if weekday_number == 6:
-        answer = "Show must go on"
+        answer = ("Учиться, учиться и еще раз учиться!")
         return answer
     elif weekday_number == 5:
         w = 1
