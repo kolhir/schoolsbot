@@ -10,6 +10,7 @@ def my_send_message(userid, string, user_markup, message):
     l = f.whoIsHe(userid)
     timenow = time.strftime("%X", time.localtime())
     k = message.from_user
+    print("Вывод\n")
     if(len(l) == 2):
         print("Школа: ",l[0], "; Класс: ", l[1], "; Время: ", timenow, sep = "")
     print(k.id, ";  Имя: ", k.first_name, ";  Фамилия: ", k.last_name, "; User_name: ", k.username, "\n", "Сообщение: ", string, "\n", sep = "")
@@ -20,6 +21,7 @@ def my_send_message_WK(userid, string, message):
     l = f.whoIsHe(userid)
     timenow = time.strftime("%X", time.localtime())
     k = message.from_user
+    print("Вывод\n")
     if(len(l) == 2):
         print("Школа: ",l[0], "Класс: ", l[1], "Время: ", timenow, sep = "")
     print(k.id, "; Имя: ", k.first_name, "; Фамилия: ", k.last_name, "; User_name: ", k.username, "\n", "Сообщение: ", string, "\n", sep = "")
@@ -82,6 +84,7 @@ def handle_text(message):
     l = f.whoIsHe(message.from_user.id)
     timenow = time.strftime("%X", time.localtime())
     k = message.from_user
+    print("Ввод\n")
     if(len(l) == 2):
         print("Школа: ",l[0], "; Класс: ", l[1], "; Время: ", timenow, sep = "")
     elif(len(l) == 1):
