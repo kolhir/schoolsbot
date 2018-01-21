@@ -137,12 +137,12 @@ def nextLesson(usList):
     day = weekdays[weekday_number]
     answer=""
     flag = ""
-    if weekday_number != 5:
-        w = 0
-    elif weekday_number == 6:
+    if weekday_number == 6:
         answer = "А сегодня не воскресенье???"
         return answer
-    else: w = 1
+    elif weekday_number == 5:
+        w = 1
+    else: w = 0
     if not(tt[klass][day]):
         answer = "Так хочется учиться сегодня??? Сорри, кажется у тебя сегодня выходной."
         return answer
@@ -276,9 +276,12 @@ def untilTheEnd(usList):
     answer=""
     flag = ""
 
-    if day != "Суббота":
-        w = 0
-    else: w = 1
+    if weekday_number == 6:
+        answer = "Show must go on"
+        return answer
+    elif weekday_number == 5:
+        w = 1
+    else: w = 0
 
     if not(tt[klass][day]):
         answer = ("Ты разве учишься сегодня?!")
