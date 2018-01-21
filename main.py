@@ -10,6 +10,7 @@ def my_send_message(userid, string, user_markup, message):
     l = f.whoIsHe(userid)
     timenow = time.strftime("%X", time.localtime())
     k = message.from_user
+    print("Вывод")
     if(len(l) == 2):
         print("Школа: ",l[0], "; Класс: ", l[1], "; Время: ", timenow, sep = "")
     print(k.id, ";  Имя: ", k.first_name, ";  Фамилия: ", k.last_name, "; User_name: ", k.username, "\n", "Сообщение: ", string, "\n", sep = "")
@@ -20,6 +21,7 @@ def my_send_message_WK(userid, string, message):
     l = f.whoIsHe(userid)
     timenow = time.strftime("%X", time.localtime())
     k = message.from_user
+    print("Вывод")
     if(len(l) == 2):
         print("Школа: ",l[0], "Класс: ", l[1], "Время: ", timenow, sep = "")
     print(k.id, "; Имя: ", k.first_name, "; Фамилия: ", k.last_name, "; User_name: ", k.username, "\n", "Сообщение: ", string, "\n", sep = "")
@@ -63,7 +65,7 @@ def change_smt(message):
     user_markup.row('Изменить класс')
     user_markup.row('Изменить школу')
     my_send_message(message.from_user.id, "Что изменить?", user_markup, message)
-    
+
 def nextLesson(message):
     my_send_message(message.from_user.id, f.nextLesson(f.whoIsHe(message.from_user.id)), start_murkup(), message)###Передать класс человека
 
@@ -80,6 +82,15 @@ def handle_start(message):
 @bot.message_handler(content_types=['text'])
 def handle_text(message):
     l = f.whoIsHe(message.from_user.id)
+    timenow = time.strftime("%X", time.localtime())
+    k = message.from_user
+    print("Ввод")
+    if(len(l) == 2):
+        print("Школа: ",l[0], "; Класс: ", l[1], "; Время: ", timenow, sep = "")
+    elif(len(l) == 1):
+        print("Школа: ",l[0], "; Время: ", timenow, sep = "")
+    print(k.id, ";  Имя: ", k.first_name, ";  Фамилия: ", k.last_name, "; User_name: ", k.username, "\n", "Сообщение от пользователя: ", message.text, "\n", sep = "")
+
     if len(l) == 2: 
         if message.text == "Следующий урок":
             nextLesson(message)
