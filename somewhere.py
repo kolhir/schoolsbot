@@ -1,0 +1,8 @@
+# -*- coding: utf-8 -*-
+token = '473730851:AAH0YStH_8HEkzBU0SBq-XdrtXJUXGKbsw4'
+#token = '514174347:AAGGSeGNGlXUjocpkYVXuYJf_YSnTEe4cOQ'
+tea_token = '368508272:AAG6ICQSkB5UQW0WL61646nt7QuMyONFe-k'
+maid_token ='513179038:AAHg3qZWpZIGWsVRX0H_dU8c63vcqhvk7po'
+
+admins=(148964222502,65353297)
+
