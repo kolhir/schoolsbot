@@ -237,9 +237,7 @@ def untilTheEnd(usList):
 
     def valMinute(delta):
         answer = ""
-        if delta<=2:
-            answer = ("До конца урока осталось совсем чуть-чуть:)")
-        elif 11 <= delta <= 19:
+        if 11 <= delta <= 19:
             answer = ("До конца урока осталось: " + str(delta) + " минут" )
         elif delta % 10 == 1: 
             answer = ("До конца урока осталось: " + str(delta) + " минутa" )
