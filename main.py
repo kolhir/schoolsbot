@@ -80,15 +80,21 @@ def change_smt(message):
 
 def nextLesson(message):
     answer = f.nextLesson(f.whoIsHe(message.from_user.id))
-    my_send_message(message.from_user.id, answer, start_murkup(), message)###Передать класс человека
-    if answer in config.not_lesson:
+    if answer == "":
         rand_quote(message)
+    else:
+        my_send_message(message.from_user.id, answer, start_murkup(), message)###Передать класс человека
+        if answer in config.not_lesson:
+            rand_quote(message)
 
 def untilTheEnd(message):
     answer =  f.untilTheEnd(f.whoIsHe(message.from_user.id))
-    my_send_message(message.from_user.id, answer, start_murkup() ,message)###Передать класс человека
-    if answer in config.not_lesson:
+    if answer == "":
         rand_quote(message)
+    else:
+        my_send_message(message.from_user.id, answer, start_murkup() ,message)###Передать класс человека
+        if answer in config.not_lesson:
+            rand_quote(message)
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
@@ -153,9 +159,12 @@ def onDay(message):
     if message.text in weekdays:
         print(message.text)
         answer = f.onDay(message.text, f.whoIsHe(message.from_user.id))
-        my_send_message(message.from_user.id, answer, start_murkup(), message)###Передать класс человека
-        if answer in config.not_lesson:
+        if answer == "":
             rand_quote(message)
+        else:
+            my_send_message(message.from_user.id, answer, start_murkup(), message)###Передать класс человека
+            if answer in config.not_lesson:
+                rand_quote(message)
     elif message.text == "Следующий урок":
         nextLesson(message)
     else: ttOnDay(message)
