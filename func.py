@@ -148,7 +148,14 @@ def nextLesson(usList):
         answer = "Так хочется учиться сегодня??? Сорри, кажется у тебя сегодня выходной."
         return answer
     # print("tt = ", tt, "\n", "tt[klass] =", tt[klass], "\n", "tt[klass][day] =" , tt[klass][day])
-    for i in range(1,10):
+    n = 1
+    while (timeles[w][start][str(n)]):
+        n = n + 1
+        if n == 11:
+            break
+    n = n -1
+
+    for i in range(1,n):
         start1b = time.strptime(timeles[w][start][str(i)], "%X")
         start1e = time.strptime(timeles[w][end][str(i)], "%X")
         start2b = time.strptime(timeles[w][start][str(i + 1)], "%X") 
