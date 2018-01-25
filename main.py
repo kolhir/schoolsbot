@@ -7,7 +7,9 @@ bot = telebot.TeleBot(token, threaded=False)
 weekdays=("Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье")
 
 def rand_quote(message):
-    quote = config.quote[(random.randint(0,37))]
+    rand = (random.randint(0,37))
+    # if  (0 < rand <= 37):
+    quote = config.quote[rand]
     timenow = time.strftime("%X", time.localtime())
     k = message.from_user
     l = f.whoIsHe(k.id)
@@ -42,7 +44,7 @@ def start_murkup():
     user_markup = telebot.types.ReplyKeyboardMarkup(True, False)
     user_markup.row('Следующий урок')
     user_markup.row('Расписание на день')
-    user_markup.row('Сколько осталось до конца урока?')
+    user_markup.row('Сколько осталось до звонка?')
     user_markup.row('Изменить что-нибудь')
     return user_markup
 
@@ -120,7 +122,7 @@ def handle_text(message):
             nextLesson(message)
         elif message.text == "Расписание на день":
             ttOnDay(message)
-        elif message.text == "Сколько осталось до конца урока?":
+        elif message.text == "Сколько осталось до звонка?":
             untilTheEnd(message)
         elif message.text == "Изменить что-нибудь":
             change_smt(message)
