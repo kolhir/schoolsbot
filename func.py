@@ -286,27 +286,45 @@ def untilTheEnd(usList):
     if not(tt[klass][day]):
         answer = ("Ты разве учишься сегодня?!")
         return answer
+    
+    n = 1
+    while (timeles[w][start][str(n)]):
+        n = n + 1
+        if n == 11:
+            break
+    n = n -1
 
-    for i in range(1,10):
-        start1b = time.strptime(timeles[w][start][str(i)], "%X")
-        start1e = time.strptime(timeles[w][end][str(i)], "%X")
-        start2b = time.strptime(timeles[w][start][str(i + 1)], "%X") 
-        start2e = time.strptime(timeles[w][end][str(i + 1)], "%X")
-        if start1b <= timenow <=  start1e:
-            if str(tt[klass][day][str(i)]):
-                delta = deltaplan(timenow, start1e)
-                answer = valMinute(delta)
+    for i in range(1, n):
+        begin1 = time.strptime(timeles[w][start][str(i)], "%X")
+        end1 = time.strptime(timeles[w][end][str(i)], "%X")
+        begin2 = time.strptime(timeles[w][start][str(i + 1)], "%X") 
+        end2 = time.strptime(timeles[w][end][str(i + 1)], "%X")
+        if timenow <= begin1:
+            delta = deltaplan(timenow, begin1)
+            answer = ("Учебный день еще не начался.\nПервый урок начнется через " + str(delta) + minute(delta))
+            break
+        elif (i == (n - 1)):
+            if (timenow > end2):
+                answer = ("Как говорил Сюнь-цзы в паблике \"пацанские цитаты1234\" В учении нельзя останавливаться! Но к сожалению учебный день в твоей школе уже закончился:(")
                 break
-        elif start1e <= timenow <= start2b:
-            if str(tt[klass][day][str(i+1)]):
-                delta = deltaplan(timenow, start2b)
+            elif (end1 < timenow <= begin2):
+                delta = deltaplan(timenow, begin2)
                 answer = ("Сейчас перемена!\nДо начала урока : " + str(delta) + minute(delta))
                 break
-        elif (i == 9) and (start2b <= timenow <= start2e):
-            if str(tt[klass][day][str(i)]):
-                delta = deltaplan(timenow, start1e)
-                answer = valMinute(delta)      
-                break   
+            elif (begin2 < timenow <= end2):
+                delta = deltaplan(timenow, end2)
+                answer = ("Урок закончится через" + str(delta) + minute(delta))
+                break
+        elif  (begin1 < timenow <= end1):
+            delta = deltaplan(timenow, end2)
+            answer = ("Урок закончится через" + str(delta) + minute(delta))
+            break
+        elif (end1 < timenow <= begin2):
+            delta = deltaplan(timenow, begin2)
+            answer = ("Сейчас перемена!\nДо начала урока : " + str(delta) + minute(delta))
+            break 
         else:
+            print(n)
             answer = ("Ой все, отстань")
+            break
     return answer
