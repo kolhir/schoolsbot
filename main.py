@@ -1,10 +1,21 @@
-import telebot, config, time
+import telebot, config, time, random
 import func as f
 
 token = config.token
 bot = telebot.TeleBot(token, threaded=False)
 # bot = telebot.TeleBot(token)
 weekdays=("Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье")
+
+def rand_quote(message):
+    quote = config.quote[(random.randint(0,37))]
+    timenow = time.strftime("%X", time.localtime())
+    k = message.from_user
+    l = f.whoIsHe(k.id)
+    print("Вывод")
+    if(len(l) == 2):
+        print("Школа: ",l[0], "; Класс: ", l[1], "; Время: ", timenow, sep = "")
+    print(k.id, ";  Имя: ", k.first_name, ";  Фамилия: ", k.last_name, "; User_name: ", k.username, "\n", "Отправлена цитата:", quote , "\n", sep = "")
+    bot.send_message(message.from_user.id, quote , start_murkup())
 
 def my_send_message(userid, string, user_markup, message):
     l = f.whoIsHe(userid)
@@ -60,6 +71,7 @@ def ttOnDay(message):
     user_markup.row('Среда', 'Суббота')
     day = my_send_message(message.from_user.id, "Выбери день", user_markup, message)
     bot.register_next_step_handler(day, onDay)
+
 def change_smt(message):
     user_markup = telebot.types.ReplyKeyboardMarkup(True, False)
     user_markup.row('Изменить класс')
@@ -67,10 +79,16 @@ def change_smt(message):
     my_send_message(message.from_user.id, "Что изменить?", user_markup, message)
 
 def nextLesson(message):
-    my_send_message(message.from_user.id, f.nextLesson(f.whoIsHe(message.from_user.id)), start_murkup(), message)###Передать класс человека
+    answer = f.nextLesson(f.whoIsHe(message.from_user.id))
+    my_send_message(message.from_user.id, answer, start_murkup(), message)###Передать класс человека
+    if answer in config.not_lesson:
+        rand_quote(message)
 
 def untilTheEnd(message):
-    my_send_message(message.from_user.id, f.untilTheEnd(f.whoIsHe(message.from_user.id)), start_murkup() ,message)###Передать класс человека
+    answer =  f.untilTheEnd(f.whoIsHe(message.from_user.id))
+    my_send_message(message.from_user.id, answer, start_murkup() ,message)###Передать класс человека
+    if answer in config.not_lesson:
+        rand_quote(message)
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
@@ -134,8 +152,10 @@ def handle_text(message):
 def onDay(message): 
     if message.text in weekdays:
         print(message.text)
-        my_send_message(message.from_user.id, f.onDay(message.text, f.whoIsHe(message.from_user.id)), start_murkup(), message)###Передать класс человека
-       
+        answer = f.onDay(message.text, f.whoIsHe(message.from_user.id))
+        my_send_message(message.from_user.id, answer, start_murkup(), message)###Передать класс человека
+        if answer in config.not_lesson:
+            rand_quote(message)
     elif message.text == "Следующий урок":
         nextLesson(message)
     else: ttOnDay(message)

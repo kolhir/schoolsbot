@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import time
 from datetime import datetime,date
+
 schools =("s14","s30","s37")
 klases=("10А","10В", "9Б", "9А", "10А Не химики", "10А Химики")
 vlz_dict = {"s14":["10А Не химики", "10А Химики"],"s30":["10А","10В", "9Б", "9А",], "s37":["10А",]}
@@ -138,7 +139,7 @@ def nextLesson(usList):
     answer=""
     flag = ""
     if weekday_number == 6:
-        answer = "Только самые мудрые и самые глупые не поддаются обучению."
+        answer = ""
         return answer
     elif weekday_number == 5:
         w = 1
@@ -202,7 +203,7 @@ def onDay(day, usList):
     flag = 0
     win = ""
     if day == "Воскресенье":
-        answer =  ("В учении нельзя останавливаться.")  
+        answer =  ("")  
         return answer
     elif day != "Суббота":
         w = 0
@@ -277,7 +278,7 @@ def untilTheEnd(usList):
     flag = ""
 
     if weekday_number == 6:
-        answer = ("Учиться, учиться и еще раз учиться!")
+        answer = ("")
         return answer
     elif weekday_number == 5:
         w = 1
@@ -307,7 +308,7 @@ def untilTheEnd(usList):
         elif (i == (n - 1)):
             print(1, " ", i)
             if (timenow > end2):
-                answer = ("Как писал Сюнь-цзы в своем паблике \"пацанские цитаты1234\" \nВ учении нельзя останавливаться!\nНо к сожалению учебный день в твоей школе уже закончился:(")
+                answer = ("К сожалению учебный день в твоей школе уже закончился:(")
                 break
             elif (end1 < timenow <= begin2):
                 delta = deltaplan(timenow, begin2)
