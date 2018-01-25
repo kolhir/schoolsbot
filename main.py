@@ -133,6 +133,7 @@ def handle_text(message):
 
 def onDay(message): 
     if message.text in weekdays:
+        print(message.text)
         my_send_message(message.from_user.id, f.onDay(message.text, f.whoIsHe(message.from_user.id)), start_murkup(), message)###Передать класс человека
        
     elif message.text == "Следующий урок":
