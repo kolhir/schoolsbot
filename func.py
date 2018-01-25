@@ -288,8 +288,10 @@ def untilTheEnd(usList):
         return answer
     
     n = 1
-    while (timeles[w][start][str(n)]) and n < 10:
-        n += 1
+    while (timeles[w][start][str(n)]):
+        n = n + 1
+        if n == 11:
+            break
     n = n -1
 
     for i in range(1, n):
@@ -320,19 +322,9 @@ def untilTheEnd(usList):
         elif (end1 < timenow <= begin2):
             delta = deltaplan(timenow, begin2)
             answer = ("Сейчас перемена!\nДо начала урока : " + str(delta) + minute(delta))
-            break
-        # if start1b <= timenow <=  start1e:
-        #     delta = deltaplan(timenow, start1e)
-        #     answer = valMinute(delta)
-        #     break
-        # elif start1e <= timenow <= start2b:
-        #     delta = deltaplan(timenow, start2b)
-        #     answer = ("Сейчас перемена!\nДо начала урока : " + str(delta) + minute(delta))
-        #     break
-        # elif (i == last_lesson) and (start2b <= timenow <= start2e):
-        #     delta = deltaplan(timenow, start2e)
-        #     answer = valMinute(delta)      
-        #     break   
+            break 
         else:
+            print(n)
             answer = ("Ой все, отстань")
+            break
     return answer
