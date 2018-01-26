@@ -323,11 +323,11 @@ def untilTheEnd(usList):
                 break
             elif (begin2 < timenow <= end2):
                 delta = deltaplan(timenow, end2)
-                answer = ("Урок закончится через" + str(delta) + minute(delta))
+                valMinute(delta)
                 break
         elif  (begin1 < timenow <= end1):
-            delta = deltaplan(timenow, end2)
-            answer = ("Урок закончится через" + str(delta) + minute(delta))
+            delta = deltaplan(timenow, end1)
+            valMinute(delta)
             break
         elif (end1 < timenow <= begin2):
             delta = deltaplan(timenow, begin2)
