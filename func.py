@@ -311,7 +311,14 @@ def untilTheEnd(usList):
             delta = deltaplan(timenow, begin1)
             answer = ("Учебный день еще не начался.\nПервый урок начнется через " + str(delta) + minute(delta))
             break
-
+        elif  (begin1 < timenow <= end1):
+            delta = deltaplan(timenow, end1)
+            answer = valMinute(delta)
+            break
+        elif (end1 < timenow <= begin2):
+            delta = deltaplan(timenow, begin2)
+            answer = ("Сейчас перемена!\nДо начала урока : " + str(delta) + minute(delta))
+            break    
         elif (i == (n - 1)):
             print(1, " ", i)
             if (timenow > end2):
@@ -325,14 +332,6 @@ def untilTheEnd(usList):
                 delta = deltaplan(timenow, end2)
                 answer = valMinute(delta)
                 break
-        elif  (begin1 < timenow <= end1):
-            delta = deltaplan(timenow, end1)
-            answer = valMinute(delta)
-            break
-        elif (end1 < timenow <= begin2):
-            delta = deltaplan(timenow, begin2)
-            answer = ("Сейчас перемена!\nДо начала урока : " + str(delta) + minute(delta))
-            break 
     if answer == "":
         answer = ("Кажется что-то пошло не так, напиши пожалуйста об этом сюда @nekolhir")
     return answer
