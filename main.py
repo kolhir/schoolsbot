@@ -1,11 +1,16 @@
 import telebot, config, time, random,copy
 import func as f
-from somewhere import admins
+from somewhere import admins,getadmins
 stat = copy.deepcopy(config.stat_update)
 token = config.token
 bot = telebot.TeleBot(token, threaded=False)
 # bot = telebot.TeleBot(token)
 weekdays=("Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье")
+
+def alert_admins(something):
+    for admin in getadmins(): bot.send_message(admin, something, parse_mode='MARKDOWN')
+alert_admins("`   рил толк`\n` я(0) снова жив`\n  __но это не точно__ ")
+
 def stat_on_day(message,flag):
     global stat
     try:
@@ -26,7 +31,7 @@ def stat_on_day(message,flag):
     else:
         try:
             dv = {message.text:message.from_user.id}
-            stat["not_know"].update(dv)
+            stat["unknown"].update(dv)
         except Exception as e:
             print("Ошибка статистики 2 ", e)
 
@@ -147,19 +152,20 @@ def handle_stat(message):
         s = s + ("Всего пользователей: " + str(len(all_users)) + "\n")
         for i in list(stat.keys())[1:]:
             s = s + (i + " : " + str(len(stat[i])) + "\n")
-        bot.send_message(message.from_user.id, s)
+
+        alert_admins(s)
 
     else:
         s = "Кажется ты не админ 😱"
         bot.my_send_message(message.from_user.id, s, start_murkup(), message)
 
-@bot.message_handler(commands=['notknow'])
-def handle_notknow(message):
+@bot.message_handler(commands=['unknown'])
+def handle_unknown(message):
     if message.from_user.id in admins:
         s = ""
-        for i in stat["not_know"]:
-            s = s + (str(i) + " : " + str(stat["not_know"][i]) + "\n")
-        bot.send_message(message.from_user.id, s)
+        for i in stat["unknown"]:
+            s = s + (str(i) + " : " + str(stat["unknown"][i]) + "\n")
+        alert_admins(s)
     else:
         s = "Кажется ты не админ 😱"
         bot.my_send_message(message.from_user.id, s, start_murkup(), message)
@@ -170,7 +176,7 @@ def handle_statupdate(message):
         global stat
         stat =copy.deepcopy(config.stat_update)
         s = "Готово"
-        bot.send_message(message.from_user.id, s)
+        alert_admins(s)
     else:
         s = "Кажется ты не админ 😱"
         bot.my_send_message(message.from_user.id, s, start_murkup(), message)
