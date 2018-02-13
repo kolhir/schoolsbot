@@ -1,10 +1,34 @@
-import telebot, config, time, random
+import telebot, config, time, random,copy
 import func as f
-
+from somewhere import admins
+stat = copy.deepcopy(config.stat_update)
 token = config.token
 bot = telebot.TeleBot(token, threaded=False)
 # bot = telebot.TeleBot(token)
 weekdays=("Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье")
+def stat_on_day(message,flag):
+    global stat
+    try:
+        if len(flag) == 2:
+            if not(message.from_user.id in stat["school"][flag[0]][flag[1]]):
+                stat["school"][flag[0]][flag[1]].append(message.from_user.id)
+
+    except Exception as e:
+        print("Ошибка статистики 1 ", e)
+
+    if (message.text in config.list_command) or (message.text in weekdays):
+        try:
+            stat[message.text]
+        except Exception as e:
+            stat[message.text] = []
+        if not(message.from_user.id in stat[message.text]):
+            stat[message.text].append(message.from_user.id)
+    else:
+        try:
+            dv = {message.text:message.from_user.id}
+            stat["not_know"].update(dv)
+        except Exception as e:
+            print("Ошибка статистики 2 ", e)
 
 def rand_quote(message):
     rand = (random.randint(0,37))
@@ -65,7 +89,7 @@ def choose_klass(message):
 
 def start(message):
     my_send_message(message.from_user.id, "Выбери действие",  start_murkup(), message)
-    
+
 def ttOnDay(message):
     user_markup = telebot.types.ReplyKeyboardMarkup(True, False)
     user_markup.row('Понедельник', 'Четверг')
@@ -100,16 +124,63 @@ def untilTheEnd(message):
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
-    if not(f.whoIsHe(message.from_user.id)):
+    flag = f.whoIsHe(message.from_user.id)
+    stat_on_day(message,flag)
+    if not(flag):
         choose_school(message)
     else:
         start(message)
+
+@bot.message_handler(commands=['stat'])
+def handle_stat(message):
+    if message.from_user.id in admins:
+        s = ""
+        k = []
+        for i in stat["school"].keys():
+            for ii in stat["school"][i]:
+                s = s + (i + " : " + ii + " : " + str(len(stat["school"][i][ii])) + "\n")
+                k = k + stat["school"][i][ii]
+        all_users = []
+        for i in k:
+            if not(i in all_users):
+                all_users.append(i)
+        s = s + ("Всего пользователей: " + str(len(all_users)) + "\n")
+        for i in list(stat.keys())[1:]:
+            s = s + (i + " : " + str(len(stat[i])) + "\n")
+        bot.send_message(message.from_user.id, s)
+
+    else:
+        s = "Кажется ты не админ 😱"
+        bot.my_send_message(message.from_user.id, s, start_murkup(), message)
+
+@bot.message_handler(commands=['notknow'])
+def handle_notknow(message):
+    if message.from_user.id in admins:
+        s = ""
+        for i in stat["not_know"]:
+            s = s + (str(i) + " : " + str(stat["not_know"][i]) + "\n")
+        bot.send_message(message.from_user.id, s)
+    else:
+        s = "Кажется ты не админ 😱"
+        bot.my_send_message(message.from_user.id, s, start_murkup(), message)
+
+@bot.message_handler(commands=['statupdate'])
+def handle_statupdate(message):
+    if message.from_user.id in admins:
+        global stat
+        stat =copy.deepcopy(config.stat_update)
+        s = "Готово"
+        bot.send_message(message.from_user.id, s)
+    else:
+        s = "Кажется ты не админ 😱"
+        bot.my_send_message(message.from_user.id, s, start_murkup(), message)
 
 @bot.message_handler(content_types=['text'])
 def handle_text(message):
     l = f.whoIsHe(message.from_user.id)
     timenow = time.strftime("%X", time.localtime())
     k = message.from_user
+    stat_on_day(message,l)
     print("Ввод")
     if(len(l) == 2):
         print("Школа: ",l[0], "; Класс: ", l[1], "; Время: ", timenow, sep = "")
@@ -117,7 +188,7 @@ def handle_text(message):
         print("Школа: ",l[0], "; Время: ", timenow, sep = "")
     print(k.id, ";  Имя: ", k.first_name, ";  Фамилия: ", k.last_name, "; User_name: ", k.username, "\n", "Сообщение от пользователя: ", message.text, "\n", sep = "")
 
-    if len(l) == 2: 
+    if len(l) == 2:
         if message.text == "Следующий урок":
             nextLesson(message)
         elif message.text == "Расписание на день":
@@ -157,7 +228,8 @@ def handle_text(message):
     else:
         choose_school(message)
 
-def onDay(message): 
+def onDay(message):
+    stat_on_day(message,f.whoIsHe(message.from_user.id))
     if message.text in weekdays:
         print(message.text)
         answer = f.onDay(message.text, f.whoIsHe(message.from_user.id))
@@ -171,6 +243,7 @@ def onDay(message):
         nextLesson(message)
     else: ttOnDay(message)
 while True:
+
     try:
         bot.polling(none_stop=True)
 
@@ -179,4 +252,3 @@ while True:
         import traceback; traceback.print_exc()  # или просто print(e) если у вас логгера нет,
         # или import traceback; traceback.print_exc() для печати полной инфы
         time.sleep(15)
-
